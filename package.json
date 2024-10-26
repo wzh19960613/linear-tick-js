@@ -1,0 +1,31 @@
+{
+    "name": "linear-tick",
+    "version": "0.1.0",
+    "author": "Wzh <wzh@uvwee.com>",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/uvwee/linear-tick-js.git"
+    },
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "devDependencies": {
+        "@types/bun": "^1.1.12",
+        "bun-plugin-dts": "^0.3.0"
+    },
+    "description": "Draw everything on canvas with linear ticks",
+    "keywords": [
+        "linear",
+        "line",
+        "tick",
+        "scale",
+        "ruler",
+        "canvas"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "build": "bun ./build.ts"
+    },
+    "type": "module",
+    "types": "dist/index.d.ts",
+    "dependencies": {}
+}
