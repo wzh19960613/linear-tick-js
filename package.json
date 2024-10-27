@@ -1,10 +1,10 @@
 {
     "name": "linear-tick",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": "Wzh <wzh@uvwee.com>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/uvwee/linear-tick-js.git"
+        "url": "git+https://github.com/wzh19960613/linear-tick-js.git"
     },
     "main": "dist/index.js",
     "module": "dist/index.js",
