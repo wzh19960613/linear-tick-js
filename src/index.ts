@@ -145,8 +145,8 @@ export class LinearTick<STORE extends Record<string, any> = Record<string, any>>
         const store = this.initStore?.() ?? {} as STORE
         const state = { x: 0, y: 0, value: 0, firstValue, lastValue }
         if (this.initDraw?.(ctx, store, state, params) === null) return
-        const deltaX = dx / density, deltaY = dy / density
-        for (const [{ drawCall }, values] of filter(this.ticks, density, firstValue, lastValue))
+        const deltaX = dx / density, deltaY = dy / density, { ticks } = this
+        for (const { 0: { drawCall }, 1: values } of filter(ticks, density, firstValue, lastValue))
             for (const { init, each, final } of Array.isArray(drawCall) ? drawCall : [drawCall]) {
                 if (init?.(ctx, store, state, params) === null) continue
                 for (const value of values) {
@@ -172,10 +172,10 @@ function filter<STORE extends Record<string, any>>(
     const result = ticks
         .filter(({ maxDensityToShow: md }) => md === undefined ? true : md >= density)
         .map(t => [t, firstTickValue(t, firstValue)] as [LinearTickDefine<STORE>, any])
-        .filter(([, firstTickValue]) => firstTickValue < lastValue)
+        .filter(({ 1: firstTickValue }) => firstTickValue < lastValue)
     const valuesDrawn = new Set()
     for (let i = result.length - 1; i >= 0; --i) {
-        const [{ shy = false, multiply }, firstTickValue] = result[i]
+        const { 0: { shy = false, multiply }, 1: firstTickValue } = result[i]
         const values = []
         if (i) for (let v = firstTickValue; v < lastValue; v += multiply) {
             if (shy && valuesDrawn.has(v)) continue
