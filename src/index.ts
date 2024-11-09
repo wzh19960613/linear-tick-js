@@ -172,17 +172,21 @@ function filter<STORE extends Record<string, any>>(
     const result = ticks
         .filter(({ maxDensityToShow: md }) => md === undefined ? true : md >= density)
         .map(t => [t, firstTickValue(t, firstValue)] as [LinearTickDefine<STORE>, any])
-        .filter(({ 1: firstTickValue }) => firstTickValue < lastValue)
+        .filter(({ 1: firstTickValue }) => firstTickValue <= lastValue)
     const valuesDrawn = new Set()
     for (let i = result.length - 1; i >= 0; --i) {
         const { 0: { shy = false, multiply }, 1: firstTickValue } = result[i]
+        const steps = Math.floor((lastValue - firstTickValue) / multiply) + 1
         const values = []
-        if (i) for (let v = firstTickValue; v < lastValue; v += multiply) {
+        if (i) for (let n = 0; n < steps; ++n) {
+            const v = firstTickValue + n * multiply
             if (shy && valuesDrawn.has(v)) continue
             values.push(v)
             valuesDrawn.add(v)
-        } else for (let v = firstTickValue + multiply; v < lastValue; v += multiply)
+        } else for (let n = 0; n < steps; ++n) {
+            const v = firstTickValue + n * multiply
             if (!shy || !valuesDrawn.has(v)) values.push(v)
+        }
         result[i][1] = values
     }
     return result
@@ -204,7 +208,7 @@ function calcFirstValue(startUnit: number, density: number, anchorValue: number,
 
 function calcLastValue(endUnit: number, density: number, anchorValue: number, max?: number) {
     const v = anchorValue + endUnit * density
-    return max === undefined ? v : Math.min(max + 1, v)
+    return max === undefined ? v : Math.min(max, v)
 }
 
 function firstTickValue<STORE extends Record<string, any>>(
